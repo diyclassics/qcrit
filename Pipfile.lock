@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "52d8a710c208cf09046d747e7c0d322f9628ca1fc1cd849827fd3b7ccddc7e0d"
+            "sha256": "c0bb0d027ce239a170c71e21db2b32beda792d49a0a63d75e73fbc73aa0f8e73"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -57,13 +57,6 @@
             "index": "pypi",
             "version": "==1.18.1"
         },
-        "pipfile": {
-            "hashes": [
-                "sha256:f7d9f15de8b660986557eb3cc5391aa1a16207ac41bc378d03f414762d36c984"
-            ],
-            "index": "pypi",
-            "version": "==0.0.2"
-        },
         "scikit-learn": {
             "hashes": [
                 "sha256:045702fc87c7c022daac10e52f8cea355e28c7ecacf142820f49605f956d0fca",
@@ -117,13 +110,6 @@
                 "sha256:8f3cd2e254d8f793e7f3d6d9df77b92252b52637291d0f0da013c76ea2724b6c"
             ],
             "version": "==1.14.0"
-        },
-        "toml": {
-            "hashes": [
-                "sha256:229f81c57791a41d65e399fc06bf0848bab550a9dfd5ed66df18ce5f05e73d5c",
-                "sha256:235682dd292d5899d361a811df37e04a8828a5b1da3115886b73cf81ebc9100e"
-            ],
-            "version": "==0.10.0"
         },
         "tqdm": {
             "hashes": [
@@ -232,6 +218,13 @@
             ],
             "version": "==0.6.1"
         },
+        "pipfile": {
+            "hashes": [
+                "sha256:f7d9f15de8b660986557eb3cc5391aa1a16207ac41bc378d03f414762d36c984"
+            ],
+            "index": "pypi",
+            "version": "==0.0.2"
+        },
         "pkginfo": {
             "hashes": [
                 "sha256:7424f2c8511c186cd5424bbf31045b77435b37a8d604990b79d4e70d741148bb",
@@ -281,6 +274,13 @@
                 "sha256:8f3cd2e254d8f793e7f3d6d9df77b92252b52637291d0f0da013c76ea2724b6c"
             ],
             "version": "==1.14.0"
+        },
+        "toml": {
+            "hashes": [
+                "sha256:229f81c57791a41d65e399fc06bf0848bab550a9dfd5ed66df18ce5f05e73d5c",
+                "sha256:235682dd292d5899d361a811df37e04a8828a5b1da3115886b73cf81ebc9100e"
+            ],
+            "version": "==0.10.0"
         },
         "tqdm": {
             "hashes": [
