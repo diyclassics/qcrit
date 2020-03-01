@@ -8,11 +8,11 @@ numpy = "*"
 nltk = "*"
 tqdm = "*"
 scikit-learn = "*"
+pipfile = "*"
 
 [dev-packages]
 pylint = "*"
 twine = "*"
-pipfile = "*"
 
 [requires]
 python_version = "3.7"
