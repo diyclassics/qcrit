@@ -7,12 +7,12 @@ name = "pypi"
 numpy = "*"
 nltk = "*"
 tqdm = "*"
+scikit-learn = "*"
 
 [dev-packages]
 pylint = "*"
 twine = "*"
 pipfile = "*"
-scikit-learn = "*"
 
 [requires]
 python_version = "3.7"
