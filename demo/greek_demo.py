@@ -4,7 +4,7 @@
 import os
 from shlex import quote
 
-_CURRENT_DIR = os.path.dirname(__file__)
+_CURRENT_DIR = 'greek_texts'
 #If the output file already exists, the feature extraction code will not override it
 #Delete the output file so that the demo can create one
 if os.path.isfile(os.path.join(_CURRENT_DIR, 'output.pickle')):

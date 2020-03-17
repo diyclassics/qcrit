@@ -4,7 +4,7 @@
 import os
 from shlex import quote
 
-_CURRENT_DIR = os.path.dirname(__file__)
+_CURRENT_DIR = 'latin_texts'
 #If the output file already exists, the feature extraction code will not override it
 #Delete the output file so that the demo can create one
 if os.path.isfile(os.path.join(_CURRENT_DIR, 'output.pickle')):
@@ -17,32 +17,15 @@ from functools import reduce
 from unicodedata import normalize
 
 #Let sentence tokenizer know that periods and semicolons are the punctuation marks that end sentences
-setup_tokenizers(terminal_punctuation=('.', ';'))
+setup_tokenizers(terminal_punctuation=('.', '?','!'))
 
-#Using 'words' makes the input 'text' parameter become a list of words
-@textual_feature(tokenize_type='words')
-def num_conjunctions(text): #parameter must be the text of a file
-    return reduce(
-        lambda count, word: count + (
-            1 if word in {
-                normalize('NFD', val) for val in ['καί', 'καὶ', 'ἀλλά', 'ἀλλὰ', 'ἤ', 'ἢ']
-            } else 0
-        ), text, 0
-    )
-
-#Using 'sentences' makes the input 'text' parameter become a list of sentences
-@textual_feature(tokenize_type='sentences')
-def mean_sentence_length(text): #parameter must be the text of a file
-    return reduce(lambda count, sentence: count + len(sentence), text, 0) / len(text)
-
-#Not putting any decorator parameters will leave the input 'text' parameter unchanged as a string of text
-@textual_feature()
-def num_interrogatives(text): #parameter must be the text of a file
-    return text.count(';')
+import qcrit.features.latin_features
 
 qcrit.extract_features.main(
     corpus_dir=_CURRENT_DIR,
-    file_extension_to_parse_function={'tess': qcrit.extract_features.parse_tess},
+    file_extension_to_parse_function={'tess': qcrit.extract_features.parse_tess,
+                                      'txt': qcrit.extract_features.parse_txt,
+                                     },
     output_file=os.path.join(_CURRENT_DIR, 'output.pickle')
 )
 
