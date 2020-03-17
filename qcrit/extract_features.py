@@ -14,17 +14,17 @@ from . import color as c
 from . import textual_feature
 
 def parse_tess(file_name):
-	'''Used to parse tess tags found at the beginning of lines of .tess files'''
-	file_text = StringIO()
-	with open(file_name, mode='r', encoding='utf-8') as file:
-		for line in file:
-			#Ignore lines without tess tags, or parse the tag out and strip whitespace
-			if not line.startswith('<'):
-				continue
-			assert '>' in line, f'Malformed tess tag in {file_name}'
-			file_text.write(line[line.index('>') + 1:].strip())
-			file_text.write(' ')
-	return file_text.getvalue()
+    '''Used to parse tess tags found at the beginning of lines of .tess files'''
+    file_text = StringIO()
+    with open(file_name, mode='r', encoding='utf-8') as file:
+        for line in file:
+            #Ignore lines without tess tags, or parse the tag out and strip whitespace
+            if not line.startswith('<'):
+                continue
+            assert '>' in line, f'Malformed tess tag in {file_name}'
+            file_text.write(line[line.index('>') + 1:].strip())
+            file_text.write(' ')
+    return file_text.getvalue()
 
 def parse_txt(file_name):
     with open(file_name,'r') as f:
@@ -32,7 +32,7 @@ def parse_txt(file_name):
     return text
 
 FILE_PARSERS = {
-	'tess': parse_tess,
+    'tess': parse_tess,
     'txt': parse_txt,
 }
 
