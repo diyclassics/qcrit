@@ -5,7 +5,6 @@ import re
 from os.path import join, dirname
 
 import setuptools
-import pipfile
 
 setuptools.setup(
 	name='qcrit',
@@ -33,10 +32,10 @@ setuptools.setup(
 		'License :: OSI Approved :: MIT License',
 		'Operating System :: OS Independent',
 	],
-	install_requires=[
-		#Use the [packages] section from the Pipfile to determine required dependencies
-		#The [dev-packages] section is not included
-		pkg + (version if version != '*' else '')
-		for pkg, version in pipfile.load(join(dirname(__file__), 'Pipfile')).data['default'].items()
-	],
+    install_requires=[
+    'numpy',
+    'nltk',
+    'tqdm',
+    'scikit-learn',
+    ]
 )
