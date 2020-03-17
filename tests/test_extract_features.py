@@ -12,39 +12,39 @@ setup_tokenizers(terminal_punctuation=('.', ';', ';')) #'FULL STOP', 'SEMICOLON
 
 @textual_feature(tokenize_type='words', debug=True)
 def dummy_feature(text):
-	pass
+    pass
 
 class TestExtractFeatures(unittest.TestCase):
 
-	def testAllNone(self):
-		self.assertRaises(ValueError, main, corpus_dir=None, file_extension_to_parse_function=None)
+    def testAllNone(self):
+        self.assertRaises(ValueError, main, corpus_dir=None, file_extension_to_parse_function=None)
 
-	def testInvalidCorpusDirectory(self):
-		self.assertRaises(ValueError, main, corpus_dir='abc', file_extension_to_parse_function={'tess': parse_tess})
+    def testInvalidCorpusDirectory(self):
+        self.assertRaises(ValueError, main, corpus_dir='abc', file_extension_to_parse_function={'tess': parse_tess})
 
-	def testExcludedPaths(self):
-		self.assertRaises(ValueError, main, corpus_dir='.', file_extension_to_parse_function={'tess': parse_tess}, excluded_paths=[])
+    def testExcludedPaths(self):
+        self.assertRaises(ValueError, main, corpus_dir='.', file_extension_to_parse_function={'tess': parse_tess}, excluded_paths=[])
 
-	def testEmptyFeatures(self):
-		self.assertRaises(ValueError, main, corpus_dir='.', file_extension_to_parse_function={'tess': parse_tess}, features=[])
+    def testEmptyFeatures(self):
+        self.assertRaises(ValueError, main, corpus_dir='.', file_extension_to_parse_function={'tess': parse_tess}, features=[])
 
-	def testOutputAlreadyExists(self):
-		self.assertRaises(ValueError, main, corpus_dir='.', file_extension_to_parse_function={'tess': parse_tess}, output_file=__file__)
+    def testOutputAlreadyExists(self):
+        self.assertRaises(ValueError, main, corpus_dir='.', file_extension_to_parse_function={'tess': parse_tess}, output_file=__file__)
 
-	def testOutputDirectoryDoesntExist(self):
-		self.assertRaises(ValueError, main, corpus_dir='.', file_extension_to_parse_function={'tess': parse_tess}, output_file='a/b')
+    def testOutputDirectoryDoesntExist(self):
+        self.assertRaises(ValueError, main, corpus_dir='.', file_extension_to_parse_function={'tess': parse_tess}, output_file='a/b')
 
-	def testOutputFalsy(self):
-		self.assertRaises(ValueError, main, corpus_dir='.', file_extension_to_parse_function={'tess': parse_tess}, output_file='')
+    def testOutputFalsy(self):
+        self.assertRaises(ValueError, main, corpus_dir='.', file_extension_to_parse_function={'tess': parse_tess}, output_file='')
 
-	def testOutputDirectoryInvalidAndNoFile(self):
-		self.assertRaises(ValueError, main, corpus_dir='.', file_extension_to_parse_function={'tess': parse_tess}, output_file='a/')
+    def testOutputDirectoryInvalidAndNoFile(self):
+        self.assertRaises(ValueError, main, corpus_dir='.', file_extension_to_parse_function={'tess': parse_tess}, output_file='a/')
 
-	def testOutputDirectoryValidAndNoFile(self):
-		self.assertRaises(ValueError, main, corpus_dir='.', file_extension_to_parse_function={'tess': parse_tess}, output_file='./')
+    def testOutputDirectoryValidAndNoFile(self):
+        self.assertRaises(ValueError, main, corpus_dir='.', file_extension_to_parse_function={'tess': parse_tess}, output_file='./')
 
-	def testOutputDirectoryValidAndNoFile2(self):
-		self.assertRaises(ValueError, main, corpus_dir='.', file_extension_to_parse_function={'tess': parse_tess}, output_file='.')
+    def testOutputDirectoryValidAndNoFile2(self):
+        self.assertRaises(ValueError, main, corpus_dir='.', file_extension_to_parse_function={'tess': parse_tess}, output_file='.')
 
 if __name__ == '__main__':
-	unittest.main()
+    unittest.main()

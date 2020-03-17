@@ -22,7 +22,7 @@ from qcrit.textual_feature import setup_tokenizers
 import qcrit.features.universal_features
 setup_tokenizers(terminal_punctuation=('.', '!', '?'))
 main(
-	corpus_dir='your-directory-name', file_extension_to_parse_function={'txt': lambda filename: open(filename).read()}
+    corpus_dir='your-directory-name', file_extension_to_parse_function={'txt': lambda filename: open(filename).read()}
 )
 ```
 
@@ -39,7 +39,7 @@ Once you have written a feature as a `python` function, label it with the decora
 from qcrit.textual_feature import textual_feature
 @textual_feature()
 def count_definite_article(text):
-	return text.count('the')
+    return text.count('the')
 ```
 
 The `textual_feature` decorator takes an argument that represents the type of tokenization.
@@ -55,9 +55,9 @@ what format it will receive the `'text'` parameter.
 from functools import reduce
 @textual_feature(tokenize_type='sentences')
 def mean_sentence_len(text):
-	sen_len = reduce(lambda cur_len, cur_sen: cur_len + len(cur_sen), text, 0)
-	num_sentences = len(text)
-	return sen_len / num_sentences
+    sen_len = reduce(lambda cur_len, cur_sen: cur_len + len(cur_sen), text, 0)
+    num_sentences = len(text)
+    return sen_len / num_sentences
 ```
 
 ### Extracting Features
@@ -79,7 +79,7 @@ from qcrit.textual_feature import setup_tokenizers
 from somewhere_else import count_definite_article, mean_sentence_len
 setup_tokenizers(terminal_punctuation=('.', '!', '?'), language='greek')
 main(
-	corpus_dir='demo', file_extension_to_parse_function={'tess': parse_tess}, output_file='output.pickle'
+    corpus_dir='demo', file_extension_to_parse_function={'tess': parse_tess}, output_file='output.pickle'
 )
 
 ```
@@ -118,53 +118,53 @@ from sklearn.metrics import accuracy_score
 
 @model_analyzer()
 def feature_rankings(data, target, file_names, feature_names, labels_key):
-	print('-' * 40 + '\nRandom Forest Classifier feature rankings\n')
-	features_train, features_test, labels_train, _ = train_test_split(data, target, test_size=0.5, random_state=0)
-	clf = ensemble.RandomForestClassifier(random_state=0, n_estimators=10)
-	clf.fit(features_train, labels_train)
-	clf.predict(features_test)
+    print('-' * 40 + '\nRandom Forest Classifier feature rankings\n')
+    features_train, features_test, labels_train, _ = train_test_split(data, target, test_size=0.5, random_state=0)
+    clf = ensemble.RandomForestClassifier(random_state=0, n_estimators=10)
+    clf.fit(features_train, labels_train)
+    clf.predict(features_test)
 
-	#Display features in order of importance
-	print('Feature importances:')
-	for tup in sorted(zip(feature_names, clf.feature_importances_), key=lambda s: -s[1]):
-		print('\t%f: %s' % (tup[1], tup[0]))
+    #Display features in order of importance
+    print('Feature importances:')
+    for tup in sorted(zip(feature_names, clf.feature_importances_), key=lambda s: -s[1]):
+        print('\t%f: %s' % (tup[1], tup[0]))
 
 @model_analyzer()
 def classifier_accuracy(data, target, file_names, feature_names, labels_key):
-	print('-' * 40 + '\nRandom Forest Classifier accuracy\n')
-	features_train, features_test, labels_train, labels_test = train_test_split(
-		data, target, test_size=0.5, random_state=0
-	)
-	clf = ensemble.RandomForestClassifier(random_state=0, n_estimators=10)
-	clf.fit(features_train, labels_train)
-	results = clf.predict(features_test)
+    print('-' * 40 + '\nRandom Forest Classifier accuracy\n')
+    features_train, features_test, labels_train, labels_test = train_test_split(
+        data, target, test_size=0.5, random_state=0
+    )
+    clf = ensemble.RandomForestClassifier(random_state=0, n_estimators=10)
+    clf.fit(features_train, labels_train)
+    results = clf.predict(features_test)
 
-	print('Stats:')
-	print(
-		'\tNumber correct: ' + str(accuracy_score(labels_test, results, normalize=False)) +
-		' / ' + str(len(results))
-	)
-	print('\tPercentage correct: ' + str(accuracy_score(labels_test, results) * 100) + '%')
+    print('Stats:')
+    print(
+        '\tNumber correct: ' + str(accuracy_score(labels_test, results, normalize=False)) +
+        ' / ' + str(len(results))
+    )
+    print('\tPercentage correct: ' + str(accuracy_score(labels_test, results) * 100) + '%')
 
 @model_analyzer()
 def misclassified_texts(data, target, file_names, feature_names, labels_key):
-	print('-' * 40 + '\nRandom Forest Classifier misclassified texts\n')
-	features_train, features_test, labels_train, labels_test, idx_train, idx_test = train_test_split(
-		data, target, range(len(target)), test_size=0.5, random_state=0
-	)
-	print('Train texts:\n\t' + '\n\t'.join(file_names[i] for i in idx_train) + '\n')
-	print('Test texts:\n\t' + '\n\t'.join(file_names[i] for i in idx_test) + '\n')
-	clf = ensemble.RandomForestClassifier(random_state=0, n_estimators=10)
-	clf.fit(features_train, labels_train)
-	results = clf.predict(features_test)
+    print('-' * 40 + '\nRandom Forest Classifier misclassified texts\n')
+    features_train, features_test, labels_train, labels_test, idx_train, idx_test = train_test_split(
+        data, target, range(len(target)), test_size=0.5, random_state=0
+    )
+    print('Train texts:\n\t' + '\n\t'.join(file_names[i] for i in idx_train) + '\n')
+    print('Test texts:\n\t' + '\n\t'.join(file_names[i] for i in idx_test) + '\n')
+    clf = ensemble.RandomForestClassifier(random_state=0, n_estimators=10)
+    clf.fit(features_train, labels_train)
+    results = clf.predict(features_test)
 
-	print('Misclassifications:')
-	for i, _ in enumerate(results):
-		if results[i] != labels_test[i]:
-			print('\t' + file_names[idx_test[i]])
+    print('Misclassifications:')
+    for i, _ in enumerate(results):
+        if results[i] != labels_test[i]:
+            print('\t' + file_names[idx_test[i]])
 
 qcrit.analyze_models.main(
-	'output.pickle', 'classifications.csv'
+    'output.pickle', 'classifications.csv'
 )
 ```
 Output:
@@ -173,9 +173,9 @@ Output:
 Random Forest Classifier feature rankings
 
 Feature importances:
-	0.400000: num_conjunctions
-	0.400000: num_interrogatives
-	0.200000: mean_sentence_length
+    0.400000: num_conjunctions
+    0.400000: num_interrogatives
+    0.200000: mean_sentence_length
 
 
 Elapsed time: 0.0122 seconds
@@ -184,8 +184,8 @@ Elapsed time: 0.0122 seconds
 Random Forest Classifier accuracy
 
 Stats:
-	Number correct: 1 / 2
-	Percentage correct: 50.0%
+    Number correct: 1 / 2
+    Percentage correct: 50.0%
 
 
 Elapsed time: 0.0085 seconds
@@ -194,15 +194,15 @@ Elapsed time: 0.0085 seconds
 Random Forest Classifier misclassified texts
 
 Train texts:
-	demo/aristotle.poetics.tess
-	demo/aristophanes.ecclesiazusae.tess
+    demo/aristotle.poetics.tess
+    demo/aristophanes.ecclesiazusae.tess
 
 Test texts:
-	demo/euripides.heracles.tess
-	demo/plato.respublica.part.1.tess
+    demo/euripides.heracles.tess
+    demo/plato.respublica.part.1.tess
 
 Misclassifications:
-	demo/plato.respublica.part.1.tess
+    demo/plato.respublica.part.1.tess
 
 
 Elapsed time: 0.0082 seconds
@@ -211,14 +211,14 @@ Elapsed time: 0.0082 seconds
 ## Development
 1. Ensure that you have `pipenv` installed. Also, ensure that you have a version of `python` installed that matches the version in the `Pipfile`.
 1. Setup a virtual environment and install the necessary dependencies:
-	```bash
-	PIPENV_VENV_IN_PROJECT=true pipenv install --dev
-	```
+    ```bash
+    PIPENV_VENV_IN_PROJECT=true pipenv install --dev
+    ```
 1. Activate the virtual environment:
-	```bash
-	pipenv shell
-	```
-	Now, `python` commands will use the dependencies and `python` version from the virtual environment. Use `exit` to leave the virtual environment, and use `pipenv shell` while in the project directory to activate it again.
+    ```bash
+    pipenv shell
+    ```
+    Now, `python` commands will use the dependencies and `python` version from the virtual environment. Use `exit` to leave the virtual environment, and use `pipenv shell` while in the project directory to activate it again.
 
 ### Demo
 ```bash
