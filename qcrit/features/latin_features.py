@@ -25,7 +25,7 @@ def _count_target_freq(list_of_words, targets):
     for word in list_of_words:
         num_target += 1 if word in targets else 0
         num_characters += len(word)
-    return num_target / num_characters
+    return num_target / len(list_of_words)
 
 def _count_target_bigram_freq(list_of_words, monograms, bigrams):
     # If monograms and bigrams contained any of the same elements, an ambiguity would arise
@@ -47,7 +47,7 @@ def _count_target_bigram_freq(list_of_words, monograms, bigrams):
         else:
             bigram_first_half = None
         num_characters += len(word)
-    return num_target / num_characters
+    return num_target / len(list_of_words)
 
 # TERMINAL_PUNCTUATION = ('.', '?', '!')
 PUNC_STRIP = (',', ';', ':')
@@ -240,7 +240,7 @@ def interrogative(text):
     for word in text:
         num_target += 1 if '?' in word else 0
         num_characters += len(word)
-    return num_target / num_characters
+    return num_target / len(text)
 
 @textual_feature(tokenize_type='words')
 def superlatives(text):
@@ -250,7 +250,7 @@ def superlatives(text):
     for word in text:
         num_superlatives += 1 if 'issim' in word else 0
         num_characters += len(word)
-    return num_superlatives / num_characters
+    return num_superlatives / len(text)
 
 @textual_feature(tokenize_type='words')
 def startf(text):
@@ -265,7 +265,7 @@ def startf(text):
         num_target += 1 if text[i] == 'atque' and text[i + 1].startswith(consonants) else 0
         num_characters += len(text[i])
     num_characters += len(text[-1])
-    return num_target / num_characters
+    return num_target / len(text)
 
 @textual_feature(tokenize_type='words')
 def end_gerund(text):
@@ -277,9 +277,7 @@ def end_gerund(text):
         if word != 'nondum' and word.endswith(gerund_endings):
             num_gerund += 1
         num_characters += len(word)
-    return num_gerund / num_characters
-
-
+    return num_gerund / len(text)
 
 @textual_feature(tokenize_type='words')
 def cum_clause(text):
@@ -291,7 +289,7 @@ def cum_clause(text):
         num_cum_clause += 1 if text[i] == 'cum' and not text[i + 1].endswith(cum_clause_endings) else 0
         num_characters += len(text[i])
     num_characters += len(text[-1])
-    return num_cum_clause / num_characters
+    return num_cum_clause / len(text)
 
 #---------------------------------------------------------------------------
 # List C
@@ -312,7 +310,7 @@ def multi_occurence(text):
     for word in text:
         num_target += 1 if word in conjunctions or word.endswith('que') else 0
         num_characters += len(word)
-    return num_target / num_characters
+    return num_target / len(text)
 
 @textual_feature(tokenize_type='words')
 def endf(text):
@@ -324,7 +322,7 @@ def endf(text):
         num_target += 1 if text[i] == 'o' and text[i + 1].endswith(vocatives) else 0
         num_characters += len(text[i])
     num_characters += len(text[-1])
-    return num_target / num_characters
+    return num_target / len(text)
 
 #---------------------------------------------------------------------------
 # Miscellaneous -- SORT!
@@ -339,20 +337,6 @@ def mean_sentence(text):
     )
     return len_of_all_words / len(text)
 
-# @textual_feature(tokenize_type='words')
-# def characters(text):
-#     text = [t for t in text if t not in PUNC_STRIP]
-#     return reduce(lambda cur_len, word: cur_len + len(word), text, 0)
-#
-# @textual_feature(tokenize_type='words')
-# def words(text):
-#     text = [t for t in text if t not in PUNC_STRIP]
-#     return len(text)
-#
-# @textual_feature(tokenize_type='sentence_words')
-# def sentences(text):
-#     # fix
-#     return len(text)
 
 @textual_feature(tokenize_type='sentence_words')
 def mean_relative(text):

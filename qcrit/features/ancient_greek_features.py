@@ -33,7 +33,7 @@ def freq_conditional_markers(text):
         num_conditional_words += 1 if word in conditional_words else 0
         num_characters += len(word)
 
-    return num_conditional_words / num_characters
+    return num_conditional_words / len(text)
 
 @textual_feature(tokenize_type='words')
 def freq_personal_pronouns(text):
@@ -54,7 +54,7 @@ def freq_personal_pronouns(text):
         num_pronouns += 1 if word in personal_pronouns else 0
         num_characters += len(word)
 
-    return num_pronouns / num_characters
+    return num_pronouns / len(text)
 
 @textual_feature(tokenize_type='words')
 def freq_demonstrative(text):
@@ -80,7 +80,7 @@ def freq_demonstrative(text):
         num_demonstratives += 1 if word in demonstrative_pronouns else 0
         num_characters += len(word)
 
-    return num_demonstratives / num_characters
+    return num_demonstratives / len(text)
 
 @textual_feature(tokenize_type='sentence_words')
 def freq_indefinite_pronoun_in_non_interrogative_sentence(text):
@@ -103,7 +103,7 @@ def freq_indefinite_pronoun_in_non_interrogative_sentence(text):
                 num_indefinite_pronouns += 1 if word in pronoun_chars else 0
                 num_characters += len(word)
 
-    return num_indefinite_pronouns / num_characters
+    return num_indefinite_pronouns / len(text)
 
 @textual_feature(tokenize_type='words')
 def freq_allos(text):
@@ -123,7 +123,7 @@ def freq_allos(text):
         num_allos += 1 if word in allos_characters else 0
         num_characters += len(word)
 
-    return num_allos / num_characters
+    return num_allos / len(text)
 
 @textual_feature(tokenize_type='words')
 def freq_autos(text):
@@ -144,7 +144,7 @@ def freq_autos(text):
         num_autos += 1 if word in autos_characters else 0
         num_characters += len(word)
 
-    return num_autos / num_characters
+    return num_autos / len(text)
 
 @textual_feature(tokenize_type='words')
 def freq_reflexive(text):
@@ -217,7 +217,7 @@ def freq_reflexive(text):
 
         num_characters += len(word)
 
-    return num_reflexive / num_characters
+    return num_reflexive / len(text)
 
 @textual_feature(tokenize_type='sentence_words')
 def freq_sentences_with_vocative_omega(text):
@@ -257,7 +257,7 @@ def freq_superlative(text):
         num_superlative += 1 if word.endswith(superlative_ending_characters) else 0
         num_characters += len(word)
 
-    return num_superlative / num_characters
+    return num_superlative / len(text)
 
 @textual_feature(tokenize_type='words')
 def freq_conjunction(text):
@@ -277,7 +277,7 @@ def freq_conjunction(text):
         num_conjunction += 1 if word in conjunction_chars else 0
         num_characters += len(word)
 
-    return num_conjunction / num_characters
+    return num_conjunction / len(text)
 
 @textual_feature(tokenize_type='sentence_words')
 def mean_sentence_length(text):
@@ -356,7 +356,7 @@ def freq_circumstantial_markers(text):
         num_participles += 1 if word in participles else 0
         num_characters += len(word)
 
-    return num_participles / num_characters
+    return num_participles / len(text)
 
 @textual_feature(tokenize_type='words')
 def freq_hina(text):
@@ -373,7 +373,7 @@ def freq_hina(text):
         num_hina += 1 if word in ina_characters else 0
         num_characters += len(word)
 
-    return num_hina / num_characters
+    return num_hina / len(text)
 
 @textual_feature(tokenize_type='words')
 def freq_hopos(text):
@@ -390,7 +390,7 @@ def freq_hopos(text):
         num_hopos += 1 if word in hopos_characters else 0
         num_characters += len(word)
 
-    return num_hopos / num_characters
+    return num_hopos / len(text)
 
 @textual_feature(tokenize_type='words')
 def freq_ws(text):
@@ -407,7 +407,7 @@ def freq_ws(text):
         num_ws += 1 if word in ws_characters else 0
         num_characters += len(word)
 
-    return num_ws / num_characters
+    return num_ws / len(text)
 
 @textual_feature(tokenize_type='words')
 def freq_wste_not_preceded_by_eta(text):
@@ -432,7 +432,7 @@ def freq_wste_not_preceded_by_eta(text):
         num_characters += len(word)
         ok_to_add = word not in eta_chars
 
-    return num_wste / num_characters
+    return num_wste / len(text)
 
 @textual_feature(tokenize_type='words')
 def freq_temporal_causal_markers(text):
@@ -452,7 +452,7 @@ def freq_temporal_causal_markers(text):
         num_clause_words += 1 if word in clause_chars else 0
         num_characters += len(word)
 
-    return num_clause_words / num_characters
+    return num_clause_words / len(text)
 
 @textual_feature(tokenize_type='sentence_words')
 def variance_of_sentence_length(text):
@@ -469,7 +469,7 @@ def variance_of_sentence_length(text):
             reduce(lambda cur_len, word: cur_len + len(word), line, 0) - mean
         ) ** 2
 
-    return squared_difference / num_sentences
+    return squared_difference / len(text)
 
 @textual_feature(tokenize_type='words')
 def freq_particles(text):
@@ -491,7 +491,7 @@ def freq_particles(text):
         num_particles += 1 if word in particles else 0
         num_characters += len(word)
 
-    return num_particles / num_characters
+    return num_particles / len(text)
 
 @textual_feature(tokenize_type='words')
 def freq_men(text):
@@ -507,4 +507,4 @@ def freq_men(text):
     for word in text:
         num_men += 1 if word in men_chars else 0
         num_characters += len(word)
-    return num_men / num_characters
+    return num_men / len(text)
