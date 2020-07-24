@@ -26,14 +26,15 @@ def parse_tess(file_name):
 			file_text.write(' ')
 	return file_text.getvalue()
 
-def parse_out(file_name):
+def parse_txt(file_name):
     with open(file_name, mode='r', encoding='utf-8') as file:
         content = f.read()
     return f.read()
 
 FILE_PARSERS = {
 	'tess': parse_tess,
-    'out': parse_out,
+    'txt': parse_txt,
+    'out': parse_txt,
 }
 
 def _get_filenames(corpus_dir, file_extensions, excluded_paths):
