@@ -19,7 +19,7 @@ from unicodedata import normalize
 #Let sentence tokenizer know that periods and semicolons are the punctuation marks that end sentences
 setup_tokenizers(terminal_punctuation=('.', '?','!'))
 
-import qcrit.features.me_features
+import qcrit.features.eme_features
 
 qcrit.extract_features.main(
     corpus_dir=_CURRENT_DIR,
