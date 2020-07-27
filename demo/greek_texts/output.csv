@@ -1,0 +1,5 @@
+file,num_conjunctions,mean_sentence_length,num_interrogatives
+greek_texts/aristophanes.ecclesiazusae.tess,245,71.08291457286433,220
+greek_texts/aristotle.poetics.tess,814,206.5561797752809,5
+greek_texts/euripides.heracles.tess,195,97.0295566502463,161
+greek_texts/plato.respublica.part.1.tess,664,97.95565092989986,253
