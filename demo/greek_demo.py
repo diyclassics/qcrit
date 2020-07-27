@@ -4,9 +4,7 @@
 import os
 from shlex import quote
 
-# _CURRENT_DIR = os.path.dirname(__file__)
-_CURRENT_DIR = 'texts'
-# print(_CURRENT_DIR)
+_CURRENT_DIR = 'greek_texts'
 #If the output file already exists, the feature extraction code will not override it
 #Delete the output file so that the demo can create one
 if os.path.isfile(os.path.join(_CURRENT_DIR, 'output.pickle')):
@@ -19,16 +17,32 @@ from functools import reduce
 from unicodedata import normalize
 
 #Let sentence tokenizer know that periods and semicolons are the punctuation marks that end sentences
-setup_tokenizers(terminal_punctuation=('.', '?','!'))
+setup_tokenizers(terminal_punctuation=('.', ';'))
 
-import qcrit.features.latin_features
+#Using 'words' makes the input 'text' parameter become a list of words
+@textual_feature(tokenize_type='words')
+def num_conjunctions(text): #parameter must be the text of a file
+    return reduce(
+        lambda count, word: count + (
+            1 if word in {
+                normalize('NFD', val) for val in ['καί', 'καὶ', 'ἀλλά', 'ἀλλὰ', 'ἤ', 'ἢ']
+            } else 0
+        ), text, 0
+    )
+
+#Using 'sentences' makes the input 'text' parameter become a list of sentences
+@textual_feature(tokenize_type='sentences')
+def mean_sentence_length(text): #parameter must be the text of a file
+    return reduce(lambda count, sentence: count + len(sentence), text, 0) / len(text)
+
+#Not putting any decorator parameters will leave the input 'text' parameter unchanged as a string of text
+@textual_feature()
+def num_interrogatives(text): #parameter must be the text of a file
+    return text.count(';')
 
 qcrit.extract_features.main(
     corpus_dir=_CURRENT_DIR,
-    # features=FEATURES,
-    file_extension_to_parse_function={'tess': qcrit.extract_features.parse_tess,
-                                      'txt': qcrit.extract_features.parse_txt,
-                                     },
+    file_extension_to_parse_function={'tess': qcrit.extract_features.parse_tess},
     output_file=os.path.join(_CURRENT_DIR, 'output.pickle')
 )
 
@@ -40,11 +54,6 @@ from sklearn.metrics import accuracy_score
 
 @model_analyzer()
 def feature_rankings(data, target, file_names, feature_names, labels_key):
-    print(file_names)
-    print(feature_names)
-    print(labels_key)
-    print(data)
-    print(target)
     print('-' * 40 + '\nRandom Forest Classifier feature rankings\n')
     features_train, features_test, labels_train, _ = train_test_split(data, target, test_size=0.5, random_state=0)
     clf = ensemble.RandomForestClassifier(random_state=0, n_estimators=10)

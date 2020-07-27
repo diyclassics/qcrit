@@ -35,6 +35,7 @@ FILE_PARSERS = {
     'tess': parse_tess,
     'txt': parse_txt,
     'out': parse_txt,
+    'psd': parse_txt,
 }
 
 def _get_filenames(corpus_dir, file_extensions, excluded_paths):

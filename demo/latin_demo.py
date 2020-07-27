@@ -4,9 +4,7 @@
 import os
 from shlex import quote
 
-# _CURRENT_DIR = os.path.dirname(__file__)
-_CURRENT_DIR = 'texts'
-# print(_CURRENT_DIR)
+_CURRENT_DIR = 'latin_texts'
 #If the output file already exists, the feature extraction code will not override it
 #Delete the output file so that the demo can create one
 if os.path.isfile(os.path.join(_CURRENT_DIR, 'output.pickle')):
@@ -25,7 +23,6 @@ import qcrit.features.latin_features
 
 qcrit.extract_features.main(
     corpus_dir=_CURRENT_DIR,
-    # features=FEATURES,
     file_extension_to_parse_function={'tess': qcrit.extract_features.parse_tess,
                                       'txt': qcrit.extract_features.parse_txt,
                                      },
@@ -40,11 +37,6 @@ from sklearn.metrics import accuracy_score
 
 @model_analyzer()
 def feature_rankings(data, target, file_names, feature_names, labels_key):
-    print(file_names)
-    print(feature_names)
-    print(labels_key)
-    print(data)
-    print(target)
     print('-' * 40 + '\nRandom Forest Classifier feature rankings\n')
     features_train, features_test, labels_train, _ = train_test_split(data, target, test_size=0.5, random_state=0)
     clf = ensemble.RandomForestClassifier(random_state=0, n_estimators=10)
