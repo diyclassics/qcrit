@@ -130,20 +130,20 @@ def meansent(text):
     sents_len = [len(sent) for sent in sents_text]
     return np.mean(sents_len)
 
-# @textual_feature(tokenize_type=None)
-# def avgrelclause(text):
-#     relclauselens = []
-#     text_tree = get_tree(text)
-#     sents_trees = get_sentence_trees(text_tree)
-#     for sent_tree in sents_trees:
-#         sent_sbar = [sbar for sbar in sent_tree.subtrees(filter=lambda x: x.label() == 'SBAR')]
-#         for sbar in sent_sbar:
-#             sbar_trees = sbar.subtrees()
-#             next(sbar_trees)
-#             sbar_subtree = next(sbar_trees)
-#             if sbar_subtree.label() == 'WHNP':
-#                 whnp_tagged = list(chain(*list(chain(*[[tree.pos() for tree in sbar]]))))
-#                 whnp_words = [item[0] for item in whnp_tagged]
-#                 whnp_text = ''.join(whnp_words)
-#                 relclauselens.append(len(whnp_text))
-#     return np.mean(relclauselens)
+@textual_feature(tokenize_type=None)
+def avgrelclause(text):
+    relclauselens = []
+    text_tree = get_tree(text)
+    sents_trees = get_sentence_trees(text_tree)
+    for sent_tree in sents_trees:
+        sent_sbar = [sbar for sbar in sent_tree.subtrees(filter=lambda x: x.label() == 'SBAR')]
+        for sbar in sent_sbar:
+            sbar_trees = sbar.subtrees()
+            next(sbar_trees)
+            sbar_subtree = next(sbar_trees)
+            if sbar_subtree.label() == 'WHNP':
+                whnp_tagged = list(chain(*list(chain(*[[tree.pos() for tree in sbar]]))))
+                whnp_words = [item[0] for item in whnp_tagged]
+                whnp_text = ''.join(whnp_words)
+                relclauselens.append(len(whnp_text))
+    return np.mean(relclauselens)
