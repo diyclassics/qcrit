@@ -1,6 +1,6 @@
 # pylint: disable = missing-docstring
 '''
-Middle English features
+Modern English features
 '''
 
 from ..textual_feature import textual_feature
