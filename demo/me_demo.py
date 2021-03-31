@@ -4,7 +4,7 @@
 import os
 from shlex import quote
 
-_CURRENT_DIR = 'mde_texts'
+_CURRENT_DIR = 'me_texts'
 #If the output file already exists, the feature extraction code will not override it
 #Delete the output file so that the demo can create one
 if os.path.isfile(os.path.join(_CURRENT_DIR, 'output.pickle')):
@@ -19,11 +19,12 @@ from unicodedata import normalize
 #Let sentence tokenizer know that periods and semicolons are the punctuation marks that end sentences
 setup_tokenizers(terminal_punctuation=('.', '?','!'))
 
-import qcrit.features.mde_features
+import qcrit.features.me_features
 
 qcrit.extract_features.main(
     corpus_dir=_CURRENT_DIR,
     file_extension_to_parse_function={'out': qcrit.extract_features.parse_txt,
+                                      'psd': qcrit.extract_features.parse_txt,
                                       'txt': qcrit.extract_features.parse_txt,
                                      },
     output_file=os.path.join(_CURRENT_DIR, 'output.pickle')
