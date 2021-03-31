@@ -117,6 +117,7 @@ def ilca(text, normalize=False):
 
 @textual_feature(tokenize_type=None)
 def othr(text, normalize=False):
+    norm = get_wordcount(text) if normalize else 1
     cat = 'o\+der o\+terne o\+trum o\+dres o\+dre o\+tre o\+drum o\+derra'.split()
     cat_re = '|'.join(cat)
     return len(re.findall(rf'\(.+ ({cat_re})\)', text, re.IGNORECASE)) / norm
@@ -137,7 +138,7 @@ def exclams(text, normalize=False):
     return exclam / norm
 
 @textual_feature(tokenize_type=None)
-def subjunctives(text):
+def subjunctives(text, normalize=False):
     norm = get_wordcount(text) if normalize else 1
     cat = 'AXP BEDS BEPS HVDS HVPS VBDS VBPH'.split()
     cat_re = '|'.join(cat)

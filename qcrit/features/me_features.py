@@ -105,6 +105,7 @@ def ilca(text, normalize=False):
 
 @textual_feature(tokenize_type=None)
 def othr(text, normalize=False):
+    norm = get_wordcount(text) if normalize else 1
     cat = ' o\+der o\+ter other o\+tere o\+dere othere'.split()
     cat_re = '|'.join(cat)
     return len(re.findall(rf'\(.+ ({cat_re})\)', text, re.IGNORECASE)) / norm
@@ -173,9 +174,6 @@ def meansent(text):
     sents_tagged = [list(chain(*list(chain(*[[tree.pos() for tree in sents_tree]])))) for sents_tree in sents_trees]
     sents_words = [[item[0] for item in sent_tagged if item[1] != 'ID' and item[1] != 'CODE'] for sent_tagged in sents_tagged]
     sents_text = [preprocess(" ".join(sent_word)) for sent_word in sents_words]
-    for i, sent in enumerate(sents_text):
-        print(f'{i}: {sent}')
-    print(sents_text)
     sents_len = [len(sent) for sent in sents_text]
     return np.mean(sents_len)
 
