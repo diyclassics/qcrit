@@ -194,3 +194,4 @@ GitHub.sublime-settings
 *.pickle
 qcrit/tokenizers
 texts
+.idea/

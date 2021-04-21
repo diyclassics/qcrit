@@ -32,7 +32,9 @@ def get_tree(text):
     return text
 
 def get_sentence_trees(tree):
-    return [nltk.Tree.fromstring(tree_) for tree_ in tree.split('\n\n')]
+    sents = tree.split('\n\n')
+    sents = [sent.strip() for sent in sents]
+    return [nltk.Tree.fromstring(sent) for sent in sents]
 
 # Move this to parsers?
 def get_wordcount(text):
