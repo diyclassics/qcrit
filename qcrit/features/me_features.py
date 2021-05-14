@@ -32,8 +32,9 @@ def get_tree(text):
     return text
 
 def get_sentence_trees(tree):
+    tree = "\n".join([sent.strip() for sent in tree.split('\n') if not sent.startswith('//')])
+    tree = re.sub(r'^\s+\n', '\n', tree, flags=re.MULTILINE)
     sents = tree.split('\n\n')
-    sents = [sent.strip() for sent in sents]
     return [nltk.Tree.fromstring(sent) for sent in sents]
 
 # Move this to parsers?
@@ -41,13 +42,21 @@ def get_wordcount(text):
     text_tree = get_tree(text)
     sents_trees = get_sentence_trees(text_tree)
     sents_tagged = [list(chain(*list(chain(*[[tree.pos() for tree in sents_tree]])))) for sents_tree in sents_trees]
+    sents_tagged = [[item for item in sent_tagged if item[1] != 'CD'] for sent_tagged in sents_tagged]
     sents_words = [[item[0] for item in sent_tagged] for sent_tagged in sents_tagged]
+    sents_words = [[item.replace("'",'') for item in sent_word] for sent_word in sents_words] # Control for apostrophe
+    sents_words = [[item for item in sent_word if item.replace('+','').isalpha() and (len(item) == 1 or not item.isupper())] for sent_word in sents_words]  # Remove tokens with punctuation
+    sents_words = [sent_word for sent_word in sents_words if len(sent_word) > 2 and ''.join(sent_word) != 'No'] # Fix parser issue with N o and roman numerals
     return sum(len(i) for i in sents_words)
 
 def get_sentcount(text):
     text_tree = get_tree(text)
     sents_trees = get_sentence_trees(text_tree)
     return len(sents_trees)
+
+@textual_feature(tokenize_type=None)
+def wordcount(text):
+    return get_wordcount(text)
 
 ### Normalized by wordcount
 
@@ -65,11 +74,6 @@ def determiners(text, normalize=False):
 def reflexives(text, normalize=False):
     norm = get_wordcount(text) if normalize else 1
     return len(re.findall(r'\((.*?RFL|PRO\+.*?) ', text)) / norm
-
-@textual_feature(tokenize_type=None)
-def interrogatives(text, normalize=False):
-    norm = get_wordcount(text) if normalize else 1
-    return len(re.findall(r'\(\. \?\)', text, re.IGNORECASE)) / norm
 
 @textual_feature(tokenize_type=None)
 def prepositions(text, normalize=False):
@@ -92,14 +96,14 @@ def modals(text, normalize=False):
     return len(re.findall(r'\bMD ', text)) / norm
 
 @textual_feature(tokenize_type=None)
-def suma(text, normalize=False):
+def some(text, normalize=False):
     norm = get_wordcount(text) if normalize else 1
     cat = 'sum som somme summe some sume'.split()
     cat_re = '|'.join(cat)
     return len(re.findall(rf'\(.+ ({cat_re})\)', text, re.IGNORECASE)) / norm
 
 @textual_feature(tokenize_type=None)
-def ilca(text, normalize=False):
+def ilk(text, normalize=False):
     norm = get_wordcount(text) if normalize else 1
     cat = 'ilke ilche yche ilk ilce ilka ilca elke'.split()
     cat_re = '|'.join(cat)
@@ -113,7 +117,7 @@ def othr(text, normalize=False):
     return len(re.findall(rf'\(.+ ({cat_re})\)', text, re.IGNORECASE)) / norm
 
 @textual_feature(tokenize_type=None)
-def gif(text, normalize=False):
+def conditional(text, normalize=False):
     norm = get_wordcount(text) if normalize else 1
     cat = 'gif \+gif if ife iffe yf yif yiff yef \+giffe \+gyf \+gef'.split()
     cat_re = '|'.join(cat)
@@ -153,6 +157,11 @@ def temporalcausal(text, normalize=False):
     return markers / norm
 
 ### Normalized by sentcount
+
+@textual_feature(tokenize_type=None)
+def interrogatives(text, normalize=False):
+    norm = get_wordcount(text) if normalize else 1
+    return len(re.findall(r'\(\. \?\)', text, re.IGNORECASE)) / norm
 
 @textual_feature(tokenize_type=None)
 def relclausesentences(text, normalize=False):

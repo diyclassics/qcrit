@@ -51,8 +51,16 @@ def get_wordcount(text):
     text_tree = get_tree(text)
     sents_trees = get_sentence_trees(text_tree)
     sents_tagged = [list(chain(*list(chain(*[[tree.pos() for tree in sents_tree]])))) for sents_tree in sents_trees]
+    sents_tagged = [[item for item in sent_tagged if item[1] != 'CD'] for sent_tagged in sents_tagged]
     sents_words = [[item[0] for item in sent_tagged] for sent_tagged in sents_tagged]
+    sents_words = [[item.replace("'",'') for item in sent_word] for sent_word in sents_words] # Control for apostrophe
+    sents_words = [[item for item in sent_word if item.replace('+','').isalpha() and (len(item) == 1 or not item.isupper())] for sent_word in sents_words]  # Remove tokens with punctuation
+    sents_words = [sent_word for sent_word in sents_words if len(sent_word) > 2 and ''.join(sent_word) != 'No'] # Fix parser issue with N o and roman numerals
     return sum(len(i) for i in sents_words)
+
+@textual_feature(tokenize_type=None)
+def wordcount(text):
+    return get_wordcount(text)
 
 def get_sentcount(text):
     text_tree = get_tree(text)
@@ -64,7 +72,7 @@ def get_sentcount(text):
 @textual_feature(tokenize_type=None)
 def pronouns(text, normalize=False):
     norm = get_wordcount(text) if normalize else 1
-    return len(re.findall(r'\bPRO ', text)) / norm
+    return len(re.findall(r'\(PRO[^$]*? ', text)) / norm
 
 @textual_feature(tokenize_type=None)
 def determiners(text, normalize=False):
@@ -75,11 +83,6 @@ def determiners(text, normalize=False):
 def reflexives(text, normalize=False):
     norm = get_wordcount(text) if normalize else 1
     return len(re.findall(r'\(.*?RFL.*? ', text)) / norm
-
-@textual_feature(tokenize_type=None)
-def interrogatives(text, normalize=False):
-    norm = get_wordcount(text) if normalize else 1
-    return len(re.findall(r'\(\. \?\)', text, re.IGNORECASE)) / norm
 
 @textual_feature(tokenize_type=None)
 def prepositions(text, normalize=False):
@@ -102,14 +105,14 @@ def modals(text, normalize=False):
     return len(re.findall(r'\(.*?MD.*? ', text)) / norm
 
 @textual_feature(tokenize_type=None)
-def suma(text, normalize=False):
+def some(text, normalize=False):
     norm = get_wordcount(text) if normalize else 1
-    cat = 'sum som somme summe some sume'.split()
+    cat = 'sum sumne sumes sume sumre'.split()
     cat_re = '|'.join(cat)
     return len(re.findall(rf'\(.+ ({cat_re})\)', text, re.IGNORECASE)) / norm
 
 @textual_feature(tokenize_type=None)
-def ilca(text, normalize=False):
+def ilk(text, normalize=False):
     norm = get_wordcount(text) if normalize else 1
     cat = 'ilca ilcan ilce ylcan'.split()
     cat_re = '|'.join(cat)
@@ -123,18 +126,19 @@ def othr(text, normalize=False):
     return len(re.findall(rf'\(.+ ({cat_re})\)', text, re.IGNORECASE)) / norm
 
 @textual_feature(tokenize_type=None)
-def gif(text, normalize=False):
+def conditional(text, normalize=False):
     norm = get_wordcount(text) if normalize else 1
     cat = 'gif'.split()
     cat_re = '|'.join(cat)
     return len(re.findall(rf'\(.+ ({cat_re})\)', text, re.IGNORECASE)) / norm
 
+# Fix with new feature
 @textual_feature(tokenize_type=None)
 def exclams(text, normalize=False):
     norm = get_wordcount(text) if normalize else 1
-    cat = 'hw\+at eala'.split()
-    cat_re = '|'.join(cat)
-    exclam = len(re.findall(rf'\(.+? ({cat_re})\)', text, re.IGNORECASE))
+    exclams = [item for item in re.findall(r'\(intj.+\)', text, re.IGNORECASE) if 'hw+at' in item.lower() or 'eala' in item.lower()]
+    # print(exclams)
+    exclam = len(exclams)
     return exclam / norm
 
 @textual_feature(tokenize_type=None)
@@ -162,6 +166,11 @@ def temporalcausal(text, normalize=False):
     return markers / norm
 
 ### Normalized by sentcount
+
+@textual_feature(tokenize_type=None)
+def interrogatives(text, normalize=False):
+    norm = get_sentcount(text) if normalize else 1
+    return len(re.findall(r'\(\. \?\)', text, re.IGNORECASE)) / norm
 
 @textual_feature(tokenize_type=None)
 def relclausesentences(text, normalize=False):
@@ -207,3 +216,4 @@ def avgrelclause(text):
                 rels.append(preprocess(" ".join(item)))
     relclauselens = [len(rel) for rel in rels]
     return np.mean(relclauselens)
+de
