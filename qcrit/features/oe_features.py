@@ -216,4 +216,3 @@ def avgrelclause(text):
                 rels.append(preprocess(" ".join(item)))
     relclauselens = [len(rel) for rel in rels]
     return np.mean(relclauselens)
-de
